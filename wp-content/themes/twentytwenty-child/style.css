@@ -1,0 +1,21 @@
+/*
+Theme Name: Моя дочерняя тема
+Template: twentytwenty
+
+Не обязательные параметры:
+Description: Дочерняя тема для темы twentytwenty
+Author: David
+Version: 1.0
+*/
+
+/* импортируем стили родительской темы */
+@import url("../twentytwenty/style.css");
+
+/* Свои дополнительные стили */
+.entry-title{ 
+    color:green; 
+}
+.entry-content {
+    line-height: 1.5;
+    background: aqua;
+}
