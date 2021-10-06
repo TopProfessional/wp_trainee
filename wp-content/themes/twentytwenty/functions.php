@@ -786,3 +786,228 @@ function twentytwenty_get_elements_array() {
 	 */
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
+
+
+
+
+
+//// Я вмешался в wp //////
+function create_journal_posttype() {
+    $labels = array(
+        'name' => _x( 'journal', 'post type journal' ),
+        'singular_name' => _x( 'journal', 'post type journal' ),
+        'menu_name' => __( 'journal' ),
+        'all_items' => __( 'all journals' ),
+        'view_item' => __( 'review journal' ),
+        'add_new_item' => __( 'add new journal' ),
+        'add_new' => __( 'add new journal' ),
+        'edit_item' => __( 'edit journal' ),
+        'update_item' => __( 'update journal' ),
+        'search_items' => __( 'search journal' ),
+        'not_found' => __( 'not found journals' ),
+        'not_found_in_trash' => __( 'not found journals in trash' ),
+    );
+
+    $args = array(
+        // 'label' => __( 'movies' ),
+        // 'description' => __( 'Каталог обзоров на книги' ),
+        'labels' => $labels,
+        'supports' => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
+        // 'has_archive' => true,
+        // 'taxonomies' => array( 'your_taxonomy' ),
+        'hierarchical' => false,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'menu_position' => 5,
+        'can_export' => true,
+        'has_archive' => true,
+        'exclude_from_search' => false,
+        'publicly_queryable' => true,
+        'capability_type' => 'post',
+		'register_meta_box_cb' => 'add_journal_metaboxes',
+    );
+
+    register_post_type( 'journal', $args );
+
+}
+add_action( 'init', 'create_journal_posttype', 0 );
+
+
+function add_journal_metaboxes() {
+	add_meta_box(
+		'journal_author',
+		'Journal author',
+		'journal_author',
+		'journal',
+		'side',
+		'default'
+	);
+
+	add_meta_box(
+		'journal_name',
+		'Journal name',
+		'journal_name',
+		'journal',
+		'side',
+		'default'
+	);
+
+	add_meta_box(
+		'journal_year',
+		'Journal year',
+		'journal_year',
+		'journal',
+		'side',
+		'default'
+	);
+
+	add_meta_box(
+		'journal_count_of_pages',
+		'Journal count of pages',
+		'journal_count_of_pages',
+		'journal',
+		'side',
+		'default'
+	);
+
+	add_meta_box(
+		'journal_soft_hard_cover',
+		'Journal soft/hard cover',
+		'journal_soft_hard_cover',
+		'journal',
+		'side',
+		'default'
+	);
+	
+}
+
+function journal_author() {
+	global $post;
+
+	// Nonce field to validate form request came from current site
+	wp_nonce_field( basename( __FILE__ ), 'journal_fields' );
+
+	// Get the location data if it's already been entered
+	$author = get_post_meta( $post->ID, 'author', true );
+
+	// Output the field
+	echo '<input type="text" name="author" value="' . esc_textarea( $author )  . '" class="widefat">';
+
+}
+
+function journal_name() {
+	global $post;
+
+	// Nonce field to validate form request came from current site
+	wp_nonce_field( basename( __FILE__ ), 'journal_fields' );
+
+	// Get the location data if it's already been entered
+	$name = get_post_meta( $post->ID, 'name', true );
+
+	// Output the field
+	echo '<input type="text" name="name" value="' . esc_textarea( $name )  . '" class="widefat">';
+
+}
+
+function journal_year() {
+	global $post;
+
+	// Nonce field to validate form request came from current site
+	wp_nonce_field( basename( __FILE__ ), 'journal_fields' );
+
+	// Get the location data if it's already been entered
+	$year = get_post_meta( $post->ID, 'year', true );
+
+	// Output the field
+	echo '<input type="text" name="year" value="' . esc_textarea( $year )  . '" class="widefat">';
+
+}
+
+function journal_count_of_pages() {
+	global $post;
+
+	// Nonce field to validate form request came from current site
+	wp_nonce_field( basename( __FILE__ ), 'journal_fields' );
+
+	// Get the location data if it's already been entered
+	$count_of_pages = get_post_meta( $post->ID, 'count_of_pages', true );
+
+	// Output the field
+	echo '<input type="text" name="count_of_pages" value="' . esc_textarea( $count_of_pages )  . '" class="widefat">';
+
+}
+
+
+function journal_soft_hard_cover() {
+	global $post;
+
+	// Nonce field to validate form request came from current site
+	wp_nonce_field( basename( __FILE__ ), 'journal_fields' );
+
+	// Get the location data if it's already been entered
+	$soft_hard_cover = get_post_meta( $post->ID, 'soft_hard_cover', true );
+
+	// Output the field
+	echo '<input type="text" name="soft_hard_cover" value="' . esc_textarea( $soft_hard_cover )  . '" class="widefat">';
+
+}
+
+
+
+
+function save_journal_meta( $post_id, $post ) {
+
+	// Return if the user doesn't have edit permissions.
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return $post_id;
+	}
+
+	// Verify this came from the our screen and with proper authorization,
+	// because save_post can be triggered at other times.
+	if ( ! isset( $_POST['name'] ) || ! isset( $_POST['year'] ) || 
+		 ! isset( $_POST['author'] ) || ! isset( $_POST['count_of_pages'] ) || 
+		 ! isset( $_POST['soft_hard_cover'] ) || ! wp_verify_nonce( $_POST['journal_fields'], basename(__FILE__) ) ) {
+		return $post_id;
+	}
+
+	// Now that we're authenticated, time to save the data.
+	// This sanitizes the data from the field and saves it into an array $events_meta.
+	$journal_meta['author'] = esc_textarea( $_POST['author'] );
+	$journal_meta['name'] = esc_textarea( $_POST['name'] );
+	$journal_meta['year'] = esc_textarea( $_POST['year'] );
+	$journal_meta['count_of_pages'] = esc_textarea( $_POST['count_of_pages'] );
+	$journal_meta['soft_hard_cover'] = esc_textarea( $_POST['soft_hard_cover'] );
+
+
+	// Cycle through the $events_meta array.
+	// Note, in this example we just have one item, but this is helpful if you have multiple.
+	foreach ( $journal_meta as $key => $value ) :
+
+		// Don't store custom data twice
+		if ( 'revision' === $post->post_type ) {
+			return;
+		}
+
+		if ( get_post_meta( $post_id, $key, false ) ) {
+			// If the custom field already has a value, update it.
+			update_post_meta( $post_id, $key, $value );
+		} else {
+			// If the custom field doesn't have a value, add it.
+			add_post_meta( $post_id, $key, $value);
+		}
+
+		if ( ! $value ) {
+			// Delete the meta key if there's no value
+			delete_post_meta( $post_id, $key );
+		}
+
+	endforeach;
+
+}
+add_action( 'save_post', 'save_journal_meta', 1, 2 );
+
+flush_rewrite_rules( false );
+
