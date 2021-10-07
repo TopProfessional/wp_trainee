@@ -1010,6 +1010,9 @@ function save_journal_meta( $post_id, $post ) {
 add_action( 'save_post', 'save_journal_meta', 1, 2 );
 
 function register_my_widgets(){
+
+	if ( function_exists('register_sidebars') )
+	
 	register_sidebar( array(
 		'name' => 'sidebar2',
 		'id' => 'sidebar2',
