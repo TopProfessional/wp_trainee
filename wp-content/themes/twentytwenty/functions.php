@@ -1009,5 +1009,17 @@ function save_journal_meta( $post_id, $post ) {
 }
 add_action( 'save_post', 'save_journal_meta', 1, 2 );
 
+function register_my_widgets(){
+	register_sidebar( array(
+		'name' => 'sidebar2',
+		'id' => 'sidebar2',
+		'before_widget' => '<li class="homepage-widget-block">',
+		'after_widget' => '</li>',
+		'before_title' => '<h2 class="widgettitle">',
+		'after_title' => '</h2>',
+	) );
+}
+add_action( 'widgets_init', 'register_my_widgets' );
+
 flush_rewrite_rules( false );
 
