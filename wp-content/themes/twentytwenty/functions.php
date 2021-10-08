@@ -1011,7 +1011,7 @@ add_action( 'save_post', 'save_journal_meta', 1, 2 );
 
 function register_my_widgets(){
 
-	if ( function_exists('register_sidebars') )
+//	if ( function_exists('register_sidebars') )
 	
 	register_sidebar( array(
 		'name' => 'sidebar2',
@@ -1023,6 +1023,31 @@ function register_my_widgets(){
 	) );
 }
 add_action( 'widgets_init', 'register_my_widgets' );
+
+class Hello_world_widget extends WP_Widget {
+	
+	public function __construct() {
+		$widget_options = array(
+			'classname' => 'Hello_world_widget',
+			'description' => 'first widget',
+		);
+		parent::__construct( 'Hello_world_widget', 'Hello world Widget', $widget_options );
+	}
+
+	public function widget( $args, $instance ) {
+		?>
+		<p><strong>Hello world!</strong></p>
+		<?php
+	}
+
+
+}
+
+// Регистрация и активация виджета.
+function hello_world_register_widget() {
+    register_widget( 'Hello_world_widget' );
+}
+add_action( 'widgets_init', 'hello_world_register_widget' );
 
 flush_rewrite_rules( false );
 
