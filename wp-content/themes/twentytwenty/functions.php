@@ -1053,9 +1053,10 @@ class Hello_world_widget extends WP_Widget {
 
         <p><label for="<?php echo $this->get_field_id( 'color' ); ?>">Set color</label></p>
 		<select id="<?php echo $this->get_field_id( 'color' ); ?>" name="<?php echo $this->get_field_name( 'color' ); ?>" value="<?php echo $color; ?>">
-			<option>green</option>
-			<option>black</option>
-			<option>red</option>
+			<option value="green">green</option>
+			<option value="black">black</option>
+			<option value="red">red</option>
+			<option value="purple">purple</option>
 		</select>
 
         <?php
