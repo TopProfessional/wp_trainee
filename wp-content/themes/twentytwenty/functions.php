@@ -1025,8 +1025,8 @@ function register_my_widgets(){
 add_action( 'widgets_init', 'register_my_widgets' );
 
 class Hello_world_widget extends WP_Widget {
-	
-	public function __construct() {
+
+    public function __construct() {
 		$widget_options = array(
 			'classname' => 'Hello_world_widget',
 			'description' => 'first widget',
@@ -1034,12 +1034,39 @@ class Hello_world_widget extends WP_Widget {
 		parent::__construct( 'Hello_world_widget', 'Hello world Widget', $widget_options );
 	}
 
-	public function widget( $args, $instance ) {
-		?>
-		<p><strong>Hello world!</strong></p>
-		<?php
-	}
+    // Отображение
+    public function widget( $args, $instance ) {
+        $color = apply_filters( 'widget_title', $instance[ 'color' ] );
+       
+       ?>
 
+       <p><strong style='color: <?php echo $color;?>'>Hello world!</strong></p>
+
+        <?php 
+    }
+
+    // Редактирование
+    public function form( $instance ) {
+        $color = ! empty( $instance['color'] ) ? $instance['color'] : ''; 
+		
+		?>
+
+        <p><label for="<?php echo $this->get_field_id( 'color' ); ?>">Set color</label></p>
+		<select id="<?php echo $this->get_field_id( 'color' ); ?>" name="<?php echo $this->get_field_name( 'color' ); ?>" value="<?php echo $color; ?>">
+			<option>green</option>
+			<option>black</option>
+			<option>red</option>
+		</select>
+
+        <?php
+    }
+
+    // Обновление настроек виджета в админ-панели.
+    public function update( $new_instance, $old_instance ) {
+        $instance = $old_instance;
+        $instance[ 'color' ] = strip_tags( $new_instance[ 'color' ] );
+        return $instance;
+    }
 
 }
 
