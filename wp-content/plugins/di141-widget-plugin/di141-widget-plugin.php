@@ -27,16 +27,18 @@ class Di141_Widget extends WP_Widget {
 				'order' => 'DESC'
 			);
 			$recent_posts_array = get_posts($params);
+			$received_posts='';
 			foreach( $recent_posts_array as $recent_post_single ) 
 			{
-				// Displays url of post.
-				echo '<a href="' . get_permalink( $recent_post_single ) . '"> <br>' . $recent_post_single->post_title . '</a>'; 
+				// Contains url of post.
+				$received_posts = $received_posts. '<a href="' . get_permalink( $recent_post_single ) . '"> <br>' . $recent_post_single->post_title . '</a>'; 
 			}
+			// Displays url of post.
+			echo $received_posts;
 		}
 		else {
-			echo __('Постов нет');
+			echo __('posts not found');
 		}
-		
     }
 }
 
