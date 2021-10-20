@@ -1,0 +1,11 @@
+2021-10-20T08:07:27+00:00 CRITICAL Uncaught Error: Class 'ElementorHelloWorld\Widgets\Inline_Editing' not found in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php:43
+Stack trace:
+#0 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(303): ElementorHelloWorld\Plugin->register_widgets()
+#1 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(327): WP_Hook->apply_filters()
+#2 D:\OpenServer\domains\test1.loc\wp-includes\plugin.php(470): WP_Hook->do_action()
+#3 D:\OpenServer\domains\test1.loc\wp-content\plugins\elementor\includes\managers\widgets.php(99): do_action()
+#4 D:\OpenServer\domains\test1.loc\wp-content\plugins\elementor\includes\managers\widgets.php(235): Elementor\Widgets_Manager->init_widgets()
+#5 D:\OpenServer\domains\test1.loc\wp-content\plugins\elementor\includes\elements\column.php(1025): Elementor\Widgets_Manager->get_widget_types()
+#6 D:\OpenServer\domains\test1.loc\wp-content\plugins\elementor\includes\base\element-base.php(796): Elementor\Element_Column->_get_default_child_type()
+#7 in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php on line 43
+
