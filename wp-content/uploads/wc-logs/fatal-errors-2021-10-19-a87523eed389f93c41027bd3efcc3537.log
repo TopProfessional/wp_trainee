@@ -1,0 +1,41 @@
+2021-10-19T07:58:55+00:00 CRITICAL Uncaught Error: Call to undefined method ElementorHelloWorld\Plugin::instance() in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php:110
+Stack trace:
+#0 D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\elementor-hello-world.php(114): require_once()
+#1 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(303): Elementor_Hello_World->init()
+#2 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(327): WP_Hook->apply_filters()
+#3 D:\OpenServer\domains\test1.loc\wp-includes\plugin.php(470): WP_Hook->do_action()
+#4 D:\OpenServer\domains\test1.loc\wp-settings.php(441): do_action()
+#5 D:\OpenServer\domains\test1.loc\wp-config.php(96): require_once('D:\\OpenServer\\d...')
+#6 D:\OpenServer\domains\test1.loc\wp-load.php(50): require_once('D:\\OpenServer\\d...')
+#7 D:\OpenServer\domains\test1.loc\wp-admin\admin-ajax.php(22): require_once('D:\\OpenServer\\d...')
+#8 {main}
+  thrown in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php on line 110
+
+2021-10-19T07:58:58+00:00 CRITICAL Uncaught Error: Call to undefined method ElementorHelloWorld\Plugin::instance() in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php:110
+Stack trace:
+#0 D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\elementor-hello-world.php(114): require_once()
+#1 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(303): Elementor_Hello_World->init()
+#2 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(327): WP_Hook->apply_filters()
+#3 D:\OpenServer\domains\test1.loc\wp-includes\plugin.php(470): WP_Hook->do_action()
+#4 D:\OpenServer\domains\test1.loc\wp-settings.php(441): do_action()
+#5 D:\OpenServer\domains\test1.loc\wp-config.php(96): require_once('D:\\OpenServer\\d...')
+#6 D:\OpenServer\domains\test1.loc\wp-load.php(50): require_once('D:\\OpenServer\\d...')
+#7 D:\OpenServer\domains\test1.loc\wp-admin\admin.php(34): require_once('D:\\OpenServer\\d...')
+#8 D:\OpenServer\domains\test1.loc\wp-admin\post.php(12): require_once('D:\\OpenServer\\d...')
+#9 {main}
+  t in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php on line 110
+
+2021-10-19T07:58:59+00:00 CRITICAL Uncaught Error: Call to undefined method ElementorHelloWorld\Plugin::instance() in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php:110
+Stack trace:
+#0 D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\elementor-hello-world.php(114): require_once()
+#1 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(303): Elementor_Hello_World->init()
+#2 D:\OpenServer\domains\test1.loc\wp-includes\class-wp-hook.php(327): WP_Hook->apply_filters()
+#3 D:\OpenServer\domains\test1.loc\wp-includes\plugin.php(470): WP_Hook->do_action()
+#4 D:\OpenServer\domains\test1.loc\wp-settings.php(441): do_action()
+#5 D:\OpenServer\domains\test1.loc\wp-config.php(96): require_once('D:\\OpenServer\\d...')
+#6 D:\OpenServer\domains\test1.loc\wp-load.php(50): require_once('D:\\OpenServer\\d...')
+#7 D:\OpenServer\domains\test1.loc\wp-blog-header.php(13): require_once('D:\\OpenServer\\d...')
+#8 D:\OpenServer\domains\test1.loc\index.php(17): require('D:\\OpenServer\\d...')
+#9 {main}
+  thrown in D:\OpenServer\domains\test1.loc\wp-content\plugins\di151-plugin\plugin.php on line 110
+
