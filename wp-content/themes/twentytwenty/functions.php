@@ -1024,6 +1024,23 @@ function register_my_widgets(){
 }
 add_action( 'widgets_init', 'register_my_widgets' );
 
-
 flush_rewrite_rules( false );
 
+
+$parameters = array( 'd.od@ukr.net', 'Test mail theme', 'Test Message' );
+if ( ! wp_next_scheduled( 'di152_hook', $parameters ) ) {
+	wp_schedule_event( time(), 'daily', 'di152_hook', $parameters );
+}
+
+add_action( 'di152_hook', 'di152_mail_send', 10, 3 );
+
+/**
+ * Wrapper function for di152_mail_send.
+ *
+ * @param string $to Mail receiver.
+ * @param string $subject Mail theme'.
+ * @param string $msg Message.
+ */
+function di152_mail_send( $to, $subject, $msg ) {
+	wp_mail( $to, $subject, $msg );
+}
