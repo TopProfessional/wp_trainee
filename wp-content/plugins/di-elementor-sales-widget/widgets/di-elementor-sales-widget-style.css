@@ -1,0 +1,104 @@
+	.father {
+            justify-content: center;
+            align-items: center;
+            background: rgb(44, 44, 44);
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+            width: 500px;
+            height: 200px;
+        }
+
+        .progress {
+            background: white;
+            justify-content: flex-end;
+            border-radius: 100px;
+            align-items: center;
+            position: relative;
+            padding: 0 5px;
+            display: flex;
+            height: 11px;
+            width: 330px;
+        }
+
+        .progress-value {
+            animation: load 3s normal forwards;
+            box-shadow: 0 10px 40px -10px #fff;
+            border-radius: 100px;
+            background: rgb(102, 228, 44);
+            height: 5px;
+            width: 0;
+        }
+
+        @keyframes load {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 68%;
+            }
+        }
+
+        .full__progress-bar {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            width: 500px;
+            height: 100px;
+        }
+
+        .steps,
+        .values {
+            position: absolute;
+            display: flex;
+            justify-content: space-between;
+            width: 340px;
+        }
+        .values {
+            width: 357px;
+            margin-left: 10px;
+        }
+        .value{
+            width: 45px;
+             
+        }
+        .step {
+            width: 20px;
+            height: 20px;
+
+        }
+
+        .step {
+            background: rgb(250, 177, 19);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transition: background 1s;
+        }
+
+        .values {
+            color: #fff;
+            margin-bottom: 44px;
+        }
+
+        .important__values{
+            display: flex;
+            justify-content: space-around;
+            width: 300px;
+            color: white;
+            text-align: center;
+            margin-top: -20px;
+        }
+
+        .important__value-number{
+            font-size: 25px;
+        }
+
+        .important__value-description{
+            word-break: break-word;
+            width: 90px;
+        }

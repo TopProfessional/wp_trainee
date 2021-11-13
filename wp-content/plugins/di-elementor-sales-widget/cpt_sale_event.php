@@ -6,6 +6,190 @@
  */
 
 /**
+ * @param string $order_id contain id of current order.
+ * Counter of purchases with included products ( from sale event).
+ */
+function purchases_counter( $order_id ) {
+	$value = '1';
+	$key = 'Sale_event_kol_purchases';
+
+	$events = get_posts( array(
+		'post_type'   => 'sales_events',
+		'post_status' => 'publish',
+		)
+	);
+
+	$order = wc_get_order( $order_id );
+
+	// product_id & quantity_of_product from this phurechase.
+	foreach ( $order->get_items() as $item_id => $item ) {
+
+		// Get an instance of corresponding the WC_Product object.
+		$product = $item->get_product();
+
+		// contain id of products in order.
+		$id_in_order = $product->get_id();
+
+		// Not shure about this one.
+		$item_quantity  = $item->get_quantity(); // Get the item quantity.
+
+		foreach ( $events as $event ) {
+			$event_id = $event->ID;
+
+			// contain id of event product.
+			$id_of_event_product = get_post_meta( $event_id, 'Included_products' );
+
+			if ( intval( $id_of_event_product[0] ) === $id_in_order ) {
+
+				if ( get_post_meta( $event_id, $key ) ) {
+					$g = get_post_meta( $event_id, $key );
+
+					// If the custom field already has a value, update it.
+					update_post_meta( $event_id, $key, intval( $g[0] ) + 1 );
+				} else {
+
+					// If the custom field doesn't have a value, add it.
+					add_post_meta( $event_id, $key, $value );
+				}
+			}
+		}
+	}
+}
+add_action( 'woocommerce_thankyou', 'purchases_counter', 10 );
+
+/**
+ * Updates prices with data from sale event
+ */
+function change_price_by_event() {
+	$events = get_posts(
+		array(
+			'post_type'   => 'sales_events',
+			'post_status' => 'publish',
+		)
+	);
+
+	foreach ( $events as $event ) {
+		$event_id = $event->ID;
+
+		// contain id of event product.
+		$id_of_event_product = get_post_meta( $event_id, 'Included_products' );
+
+		// contain usual price of event product(from woo). need to update this.
+		$price_of_event_product = get_post_meta( $id_of_event_product, '_price' );
+
+		// special prices from event.
+
+		// special price 1.
+		$special_price_1 = get_post_meta( $event_id, 'Price' );
+
+		// special price 2.
+		$special_price_2 = get_post_meta( $event_id, 'A_Price' );
+
+		// special price 3.
+		$special_price_3 = get_post_meta( $event_id, 'B_Price' );
+
+		// contain usual kol of event purchases.
+		$kol_of_event_purchases = get_post_meta( $event_id, 'Sale_event_kol_purchases' );
+
+		// special orders from event.
+
+		// special orders 1.
+		$special_orders_1 = get_post_meta( $event_id, 'Orders' );
+
+		// special orders 2.
+		$special_orders_2 = get_post_meta( $event_id, 'A_Orders' );
+
+		// special orders 3.
+		$special_orders_3 = get_post_meta( $event_id, 'B_Orders' );
+
+		if ( intval( $kol_of_event_purchases[0] ) >= intval( $special_orders_2[0] ) && intval( $kol_of_event_purchases[0] ) < intval( $special_orders_3[0] ) ) {
+
+			// change current price with price_2 from event.
+			update_post_meta( $id_of_event_product[0], '_price', $special_price_2[0] );
+
+		} elseif ( intval( $kol_of_event_purchases[0] ) >= intval( $special_orders_3[0] ) ) {
+
+			// change current price with price_3 from event.
+			update_post_meta( $id_of_event_product[0], '_price', $special_price_3[0] );
+		} else {
+
+			// change current price with price_1 from event to starting stats from event.
+			update_post_meta( $id_of_event_product[0], '_price', $special_price_1[0] );
+
+			// update usual kol of event purchases to starting stats from event.
+			update_post_meta( $event_id, 'Sale_event_kol_purchases', $special_orders_1[0] );
+		}
+	}
+}
+add_action( 'woocommerce_thankyou', 'change_price_by_event', 20 );
+add_action( 'save_post', 'change_price_by_event', 20 );
+
+function activate_event( $post_id ) {
+	echo "activate";
+	//$cur_time = 
+
+	$post_id = 197;
+	$start_date = get_post_meta( $post_id, 'Start_Date', true );
+	$end_date = get_post_meta( $post_id, 'End_Date', true );
+	$date1 = date('Y-m-d H:i:s', time());
+	var_dump( $start_date);
+echo $start_date." ";
+echo $end_date." ";
+echo $date1." ";
+
+
+
+$days = get_post_meta( $id, 'Start_Date' );
+		$days_of = get_post_meta( $id, 'End_Date' );
+		$d1 = strtotime( $start_date );
+		$d2 = strtotime( $days_of[0] );
+
+		$date = date_create();
+		$h= date_timestamp_set( $date, $d1 );
+		$h1 = date_format( $date, 'U' );
+		$dtestart = new \DateTime();
+		$dtestart->setTimestamp( $h1 );
+		//var_dump($h1);
+
+
+
+//$interval =$dtestart->diff( $date1 );
+
+//echo " " . $interval->format( '%a' ) . " ";
+
+		// $days = get_post_meta( $id, 'Start_Date' );
+		// $days_of = get_post_meta( $id, 'End_Date' );
+		// $d1 = strtotime( $days[0] );
+		// $d2 = strtotime( $days_of[0] );
+
+		// $date = date_create();
+		// $h= date_timestamp_set( $date, $d1 );
+		// $h1 = date_format( $date, 'U' );
+		// $dtestart = new \DateTime();
+		// $dtestart->setTimestamp( $h1 );
+		// //var_dump($h1);
+
+		// $o = date_timestamp_set( $date, $d2 );
+		// $o1 = date_format( $date, 'U' );
+		// $dteEnd   = new \DateTime();
+		// $dteEnd->setTimestamp( $o1 );
+		// //var_dump($o1);
+
+		// //$k = date( 'Y-m-d', $d1 );
+		// //$j = date( 'Y-m-d', $d2 );
+		// //var_dump( $k );
+		// //var_dump( $days_of[0]);
+		// $interval =$dtestart->diff( $dteEnd );
+
+		// $this->$remaining_days = $interval->format( '%a' ) + 1;
+		// //$this->$remaining_days = $days[0];
+		// return $this->$remaining_days;
+}
+add_action( 'save_post_sales_events', 'activate_event', 20 );
+//woocommerce_thankyou
+//save_post_sales_events
+
+/**
  * Describe custom post type sales events.
  */
 function create_sales_events_posttype() {
@@ -132,6 +316,15 @@ function add_sales_events_metaboxes() {
 		'default'
 	);
 
+	add_meta_box(
+		'sale_event_kol_purchases',
+		'Kol of purchases',
+		'sale_event_kol_purchases',
+		'sales_events',
+		'side',
+		'default'
+	);
+
 }
 
 /**
@@ -194,20 +387,24 @@ function sales_events_end_date() {
  */
 function sales_events_included_products() {
 	global $post;
-	global $wpdb;
+	//global $wpdb;
 
 	// Get the location data if it's already been entered.
 	$included_products = get_post_meta( $post->ID, 'Included_products', true );
 
-	$results = $wpdb->get_results( "SELECT ID, post_name FROM `wp_posts` WHERE post_type = 'product'" );
+	//$results = $wpdb->get_results( "SELECT ID, post_name FROM `wp_posts` WHERE post_type = 'product'" );
+	$posts = get_posts( array(
+		'post_type'   => 'product',
+	) );
 
-	if ( ! empty( $results ) ) {
-
+	if ( ! empty( $posts ) ) {
+//var_dump( $posts );
 		// Output the field.
 		echo "<select name='Included_products' class='widefat'>";
-		foreach ( $results as $result ) {
-			$id = $result->ID;
-			$name = $result->post_name;
+		foreach ( $posts as $one_post ) {
+			//setup_postdata( $post );
+			$id   = $one_post->ID; //get_the_ID();
+			$name = $one_post->post_name;
 			?>
 				<option 
 					<?php
@@ -215,9 +412,10 @@ function sales_events_included_products() {
 							echo " selected='selected'";
 					}
 					?>
-					value="<?php echo( esc_textarea( $id ) ); ?>"> <?php echo( esc_textarea( $name ) ); ?> </option>;
+					value="<?php echo( esc_textarea( $id ) ); ?>"> <?php echo( esc_textarea( $name ) ); ?> </option>
 			<?php
 		}
+		//wp_reset_postdata();
 		echo '</select>';
 	}
 
@@ -347,6 +545,25 @@ function sales_events_goal_b() {
 }
 
 /**
+ *  This fuction - sale_event_kol_purchases() calls from add_meta_box().
+ *  Add new field (type = text) for cpt sales events.
+ */
+function sale_event_kol_purchases() {
+	global $post;
+
+	// Nonce field to validate form request came from current site.
+	wp_nonce_field( basename( __FILE__ ), 'sales_events_fields' );
+
+	// Get the location data if it's already been entered.
+	$kol_purchases = get_post_meta( $post->ID, 'Sale_event_kol_purchases', true );
+
+	// Output the field.
+	echo '<input type="text" placeholder="0" name="Sale_event_kol_purchases" value="' . esc_textarea( $kol_purchases ) . '" class="widefat">';
+
+}
+
+
+/**
  *  This fuction - save_sales_events_meta() calls from add_meta_box().
  *  Save entered data for cpt sales events.
  *
@@ -390,6 +607,10 @@ function save_sales_events_meta( $post_id, $post ) {
 	} else {
 		update_post_meta( $post->ID, 'Increase', false );
 	}
+
+	// if ( isset( $_POST['Sale_event_kol_purchases'] ) ) {
+	// 	$sale_event_meta['Sale_event_kol_purchases'] = esc_textarea( $_POST['Sale_event_kol_purchases'] );
+	// }
 
 	// Cycle through the $sale_event_meta array.
 	foreach ( $sale_event_meta as $key => $value ) :
